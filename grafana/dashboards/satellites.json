@@ -1,0 +1,912 @@
+{
+  "uid": "sat-tracker",
+  "title": "Satellite tracker",
+  "tags": [
+    "space",
+    "satellites"
+  ],
+  "timezone": "utc",
+  "editable": true,
+  "schemaVersion": 39,
+  "version": 3,
+  "refresh": "1m",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "constellation",
+        "label": "Constellation",
+        "type": "query",
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "satapi"
+        },
+        "query": {
+          "queryType": "infinity",
+          "refId": "variable",
+          "query": "",
+          "infinityQuery": {
+            "refId": "variable",
+            "type": "json",
+            "source": "url",
+            "format": "table",
+            "parser": "backend",
+            "url": "/constellations",
+            "url_options": {
+              "method": "GET",
+              "data": ""
+            },
+            "root_selector": "",
+            "columns": [],
+            "filters": []
+          }
+        },
+        "refresh": 1,
+        "sort": 0,
+        "hide": 0,
+        "options": [],
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Featured: ISS, Tiangong, Hubble",
+          "value": "featured"
+        },
+        "description": "Group of satellites, as defined in satapi/constellations.json. Loaded from the API's /constellations endpoint."
+      },
+      {
+        "name": "satellite",
+        "label": "Satellite",
+        "type": "query",
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "satapi"
+        },
+        "query": {
+          "queryType": "infinity",
+          "refId": "variable",
+          "query": "",
+          "infinityQuery": {
+            "refId": "variable",
+            "type": "json",
+            "source": "url",
+            "format": "table",
+            "parser": "backend",
+            "url": "/satellites?group=${constellation}",
+            "url_options": {
+              "method": "GET",
+              "data": ""
+            },
+            "root_selector": "",
+            "columns": [],
+            "filters": []
+          }
+        },
+        "refresh": 1,
+        "sort": 0,
+        "hide": 0,
+        "options": [],
+        "multi": true,
+        "includeAll": true,
+        "allValue": "all",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "description": "One, several or All satellites in the selected constellation (from /satellites?group=...). The values are NORAD catalogue numbers; 'All' sends ids=all."
+      },
+      {
+        "name": "anim_seconds",
+        "label": "Replay length (s)",
+        "type": "custom",
+        "query": "5,10,20,30",
+        "current": {
+          "selected": true,
+          "text": "10",
+          "value": "10"
+        },
+        "options": [
+          {
+            "selected": false,
+            "text": "5",
+            "value": "5"
+          },
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          },
+          {
+            "selected": false,
+            "text": "20",
+            "value": "20"
+          },
+          {
+            "selected": false,
+            "text": "30",
+            "value": "30"
+          }
+        ],
+        "hide": 0,
+        "multi": false,
+        "includeAll": false,
+        "description": "How many seconds the replay of the selected time range takes."
+      },
+      {
+        "name": "label_limit",
+        "label": "Label if ≤ N sats",
+        "type": "custom",
+        "query": "0,10,30,100",
+        "current": {
+          "selected": true,
+          "text": "30",
+          "value": "30"
+        },
+        "options": [
+          {
+            "selected": false,
+            "text": "0",
+            "value": "0"
+          },
+          {
+            "selected": false,
+            "text": "10",
+            "value": "10"
+          },
+          {
+            "selected": true,
+            "text": "30",
+            "value": "30"
+          },
+          {
+            "selected": false,
+            "text": "100",
+            "value": "100"
+          }
+        ],
+        "hide": 0,
+        "multi": false,
+        "includeAll": false,
+        "description": "Show satellite names on the map only when this many satellites or fewer are shown, so large constellations stay readable. 0 = never."
+      },
+      {
+        "name": "city",
+        "label": "City",
+        "type": "query",
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "satapi"
+        },
+        "query": {
+          "queryType": "infinity",
+          "refId": "variable",
+          "query": "",
+          "infinityQuery": {
+            "refId": "variable",
+            "type": "json",
+            "source": "url",
+            "format": "table",
+            "parser": "backend",
+            "url": "/cities",
+            "url_options": {
+              "method": "GET",
+              "data": ""
+            },
+            "root_selector": "",
+            "columns": [],
+            "filters": []
+          }
+        },
+        "refresh": 1,
+        "sort": 0,
+        "hide": 0,
+        "options": [],
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Berlin",
+          "value": "berlin"
+        },
+        "description": "Observer location for the sky view. Choose 'Custom coordinates' to use the value of 'Custom lat, lon'."
+      },
+      {
+        "name": "coords",
+        "label": "Custom lat, lon",
+        "type": "textbox",
+        "query": "52.52, 13.405",
+        "current": {
+          "selected": false,
+          "text": "52.52, 13.405",
+          "value": "52.52, 13.405"
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": "52.52, 13.405",
+            "value": "52.52, 13.405"
+          }
+        ],
+        "hide": 0,
+        "description": "Latitude, longitude in degrees (north and east positive), e.g. 42.70, 23.32. Used only when City = 'Custom coordinates'."
+      },
+      {
+        "name": "min_el",
+        "label": "Min. elevation (°)",
+        "type": "custom",
+        "query": "0,10,20,30",
+        "current": {
+          "selected": true,
+          "text": "0",
+          "value": "0"
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": "0",
+            "value": "0"
+          },
+          {
+            "selected": false,
+            "text": "10",
+            "value": "10"
+          },
+          {
+            "selected": false,
+            "text": "20",
+            "value": "20"
+          },
+          {
+            "selected": false,
+            "text": "30",
+            "value": "30"
+          }
+        ],
+        "hide": 0,
+        "multi": false,
+        "includeAll": false,
+        "description": "Hide satellites lower than this above the horizon in the sky view and the table (buildings and trees usually block the lowest 10°)."
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "volkovlabs-echarts-panel",
+      "title": "Satellite motion — ${constellation}",
+      "description": "Replays the satellites' motion over the dashboard time range (maximum 24 h) in $anim_seconds seconds and stops at the range's end time. Blue dots: path travelled (25 or fewer satellites). Shading: night side, moving with the clock. Auto-refresh with an unchanged selection and range length updates the end positions without replaying; press ▶ (top right) to replay. Scroll to zoom, drag to pan. Data: query A, /animation. Code: grafana/panels/satellite-replay.js.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "satapi"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 20
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "satapi"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "url": "/animation?group=${constellation}&ids=${satellite:csv}&from=${__from}&to=${__to}",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [],
+          "filters": []
+        }
+      ],
+      "options": {
+        "editorMode": "code",
+        "getOption": "/*\n * Satellite replay — code for the \"Business Charts\" (Apache ECharts) panel.\n *\n * This file is the readable source. Grafana runs the copy embedded in\n * grafana/dashboards/satellites.json (panel option \"getOption\").\n * After editing this file run:   python3 grafana/embed_panel_code.py\n *\n * Data: query A -> /animation?group=..&ids=..&from=${__from}&to=${__to}\n *   one row per satellite per time step: norad_id, name, t (epoch ms), lat, lon, alt_km\n *\n * Behaviour:\n *   - Plays the satellites' motion from the start to the end of the dashboard\n *     time range in $anim_seconds seconds, then stops on the end time.\n *   - Positions between time steps are interpolated along a great circle.\n *   - The night side of the Earth moves with the animated clock.\n *   - When the dashboard auto-refreshes with the same selection and the same\n *     range length (e.g. \"Last 1 hour\"), it does NOT replay: it jumps straight\n *     to the new end positions, so the map stays live. Use the ▶ button\n *     (top right) to replay.\n *\n * Grafana's Business Charts panel calls this code as a function body with one\n * argument, `context` (context.panel.data, context.panel.chart, ...).\n */\n\nconst chart = context.panel.chart;\nconst dark = context.grafana.theme.isDark;\nconst rv = context.grafana.replaceVariables;\n\n// ---- settings from dashboard variables ------------------------------------\nconst ANIM_MS = (parseFloat(rv('$anim_seconds')) || 10) * 1000;\nconst LABEL_LIMIT = parseInt(rv('$label_limit'), 10) || 0;\nconst TRAIL_LIMIT = 25;      // draw the path travelled so far when <= this many satellites\nconst FRAME_MS = 40;         // ~25 frames per second\n\nconst COLORS = {\n  land: dark ? '#2a3442' : '#dfe5ec',\n  border: dark ? '#46546a' : '#aab5c2',\n  sat: '#F2495C',\n  trail: '#8AB8FF',\n  night: dark ? 'rgba(0, 0, 0, 0.38)' : 'rgba(20, 30, 60, 0.22)',\n  text: dark ? '#d8dee9' : '#24292e',\n};\n\nconst rad = Math.PI / 180;\nconst deg = 180 / Math.PI;\n\n// ---- read the data frame returned by the Infinity query ---------------------\nconst data = context.panel.data;\nconst frame = data.series && data.series[0];\nconst column = (name) => {\n  const f = frame && frame.fields.find((x) => x.name === name);\n  return f ? Array.from(f.values) : [];\n};\nconst colId = column('norad_id');\nconst colName = column('name');\nconst colT = column('t');\nconst colLat = column('lat');\nconst colLon = column('lon');\nconst colAlt = column('alt_km');\n\n// Group rows by satellite. All satellites share the same time steps.\nconst byId = new Map();\nfor (let i = 0; i < colId.length; i++) {\n  let s = byId.get(colId[i]);\n  if (!s) {\n    s = { id: colId[i], name: '', lat: [], lon: [], alt: [] };\n    byId.set(colId[i], s);\n  }\n  if (colName[i]) s.name = colName[i];\n  s.lat.push(colLat[i]);\n  s.lon.push(colLon[i]);\n  s.alt.push(colAlt[i]);\n}\nconst sats = Array.from(byId.values());\nconst times = sats.length ? colT.slice(0, sats[0].lat.length) : [];\nconst T0 = times[0];\nconst T1 = times[times.length - 1];\n\n// ---- geometry helpers ----------------------------------------------------------\nconst toVec = (lat, lon) => [Math.cos(lat * rad) * Math.cos(lon * rad), Math.cos(lat * rad) * Math.sin(lon * rad), Math.sin(lat * rad)];\n\n// Great-circle interpolation between two sub-satellite points (fraction f in 0..1).\nfunction slerp(lat1, lon1, lat2, lon2, f) {\n  const a = toVec(lat1, lon1);\n  const b = toVec(lat2, lon2);\n  const dot = Math.min(1, Math.max(-1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2]));\n  const om = Math.acos(dot);\n  let v;\n  if (om < 1e-6) {\n    v = a;\n  } else {\n    const s1 = Math.sin((1 - f) * om) / Math.sin(om);\n    const s2 = Math.sin(f * om) / Math.sin(om);\n    v = [s1 * a[0] + s2 * b[0], s1 * a[1] + s2 * b[1], s1 * a[2] + s2 * b[2]];\n  }\n  return [Math.atan2(v[1], v[0]) * deg, Math.atan2(v[2], Math.hypot(v[0], v[1])) * deg];\n}\n\n// Sub-solar point (accuracy ~0.5 deg, plenty for shading the night side).\nfunction subSolar(tMs) {\n  const d = tMs / 86400000 - 10957.5; // days since J2000.0\n  const g = (357.529 + 0.98560028 * d) * rad;\n  const q = 280.459 + 0.98564736 * d;\n  const L = (q + 1.915 * Math.sin(g) + 0.02 * Math.sin(2 * g)) * rad;\n  const e = (23.439 - 0.00000036 * d) * rad;\n  const ra = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)) * deg;\n  const dec = Math.asin(Math.sin(e) * Math.sin(L)) * deg;\n  const gmstDeg = (((280.46061837 + 360.98564736629 * d) % 360) + 360) % 360;\n  let lon = ra - gmstDeg;\n  lon = ((((lon + 180) % 360) + 360) % 360) - 180;\n  return { lat: dec, lon };\n}\n\n// Polygon covering the night side: terminator line closed over the dark pole.\nfunction nightPolygon(tMs) {\n  const sun = subSolar(tMs);\n  const dec = Math.abs(sun.lat) < 0.1 ? (sun.lat < 0 ? -0.1 : 0.1) : sun.lat;\n  const pts = [];\n  for (let lon = -180; lon <= 180; lon += 2) {\n    const lat = Math.atan(-Math.cos((lon - sun.lon) * rad) / Math.tan(dec * rad)) * deg;\n    pts.push([lon, lat]);\n  }\n  const darkPole = dec > 0 ? -90 : 90; // northern summer -> south pole is dark\n  pts.push([180, darkPole], [-180, darkPole]);\n  return pts;\n}\n\n// Position of every satellite at time tMs.\nfunction positionsAt(tMs) {\n  if (times.length < 2) {\n    return sats.map((s, i) => [s.lon[0], s.lat[0], s.alt[0], i]);\n  }\n  const x = ((tMs - T0) / (T1 - T0)) * (times.length - 1);\n  const k = Math.min(times.length - 2, Math.max(0, Math.floor(x)));\n  const f = Math.min(1, Math.max(0, x - k));\n  return sats.map((s, i) => {\n    const [lon, lat] = slerp(s.lat[k], s.lon[k], s.lat[k + 1], s.lon[k + 1], f);\n    return [lon, lat, Math.round(s.alt[k] + (s.alt[k + 1] - s.alt[k]) * f), i];\n  });\n}\n\n// Path travelled so far (time steps before tMs plus the current point).\nfunction trailsAt(tMs, current) {\n  if (sats.length > TRAIL_LIMIT) return [];\n  const out = [];\n  sats.forEach((s, i) => {\n    for (let k = 0; k < times.length && times[k] <= tMs; k++) out.push([s.lon[k], s.lat[k], s.alt[k], i]);\n    out.push(current[i]);\n  });\n  return out;\n}\n\nconst fmtTime = (tMs) => new Date(tMs).toISOString().replace('T', ' ').slice(0, 19) + ' UTC';\n\n// ---- draw one moment ------------------------------------------------------------\nfunction render(tMs, playing) {\n  const current = positionsAt(tMs);\n  chart.setOption({\n    series: [\n      { id: 'night', data: [[tMs]] },\n      { id: 'trails', data: trailsAt(tMs, current) },\n      { id: 'sats', data: current },\n    ],\n    graphic: [{\n      id: 'clock',\n      style: { text: (playing ? '▶  ' : '■  ') + fmtTime(tMs) + '   ·   ' + sats.length + ' satellites' },\n    }],\n  });\n}\n\n// ---- animation loop -------------------------------------------------------------\nlet timer = null;\nconst stop = () => { if (timer) { clearTimeout(timer); timer = null; } };\n\nfunction play() {\n  stop();\n  const started = Date.now();\n  const step = () => {\n    const f = Math.min(1, (Date.now() - started) / ANIM_MS);\n    render(T0 + f * (T1 - T0), f < 1);\n    if (f < 1) {\n      timer = setTimeout(step, FRAME_MS);\n    } else {\n      timer = null;\n      chart.__satReplayDone = replayKey;\n    }\n  };\n  step();\n}\n\n// Same selection + same range length as the last finished replay -> just jump to the end.\nconst replayKey = [rv('$constellation'), rv('${satellite:csv}'), Math.round((T1 - T0) / 60000)].join('|');\n\n// ---- message instead of a map when there is nothing to animate --------------------\nif (!sats.length) {\n  const err = (data.errors && data.errors[0]) || data.error;\n  const msg = err && err.message\n    ? err.message\n    : 'No satellites to show. Pick a constellation and satellite, and a time range of 24 hours or less.';\n  return {\n    version: 2,\n    notMerge: true,\n    option: {\n      graphic: [{\n        type: 'text', left: 'center', top: 'middle',\n        style: { text: msg, fill: COLORS.text, fontSize: 14, width: 500, overflow: 'break', align: 'center' },\n      }],\n    },\n  };\n}\n\n// ---- static chart definition (the loop above only updates data) ---------------------\nconst nameOf = (i) => sats[i].name || String(sats[i].id);\n\nconst option = {\n  geo: {\n    map: 'world',             // world GeoJSON bundled with Business Charts (panel option \"Map: JSON\")\n    roam: true,               // mouse-wheel zoom and drag\n    aspectScale: 1,           // plain longitude/latitude grid (equirectangular)\n    boundingCoords: [[-180, 90], [180, -90]],\n    top: 8, bottom: 8, left: 8, right: 8,\n    silent: true,             // countries don't react to hover\n    itemStyle: { areaColor: COLORS.land, borderColor: COLORS.border, borderWidth: 0.5 },\n  },\n  tooltip: {\n    trigger: 'item',\n    formatter: (p) => {\n      const v = p.value;\n      return `<b>${nameOf(v[3])}</b> [${sats[v[3]].id}]<br/>` +\n        `lat ${v[1].toFixed(2)}°, lon ${v[0].toFixed(2)}°<br/>alt ${v[2]} km`;\n    },\n  },\n  toolbox: {\n    right: 12, top: 8,\n    iconStyle: { borderColor: COLORS.text },\n    feature: {\n      myReplay: {\n        show: true,\n        title: 'Replay',\n        icon: 'path://M4,2 L20,12 L4,22 Z',\n        onclick: () => play(),\n      },\n    },\n  },\n  graphic: [{\n    id: 'clock', type: 'text', left: 16, top: 12, z: 100,\n    style: { text: '', fill: COLORS.text, fontSize: 13, fontFamily: 'monospace' },\n  }],\n  series: [\n    {\n      id: 'night',\n      type: 'custom',\n      coordinateSystem: 'geo',\n      silent: true,\n      z: 1,\n      data: [[T1]],\n      renderItem: (params, api) => ({\n        type: 'polygon',\n        shape: { points: nightPolygon(api.value(0)).map((p) => api.coord(p)) },\n        style: { fill: COLORS.night },\n      }),\n    },\n    {\n      id: 'trails',\n      type: 'scatter',\n      coordinateSystem: 'geo',\n      symbolSize: 2,\n      itemStyle: { color: COLORS.trail, opacity: 0.7 },\n      animation: false,\n      z: 2,\n      data: [],\n    },\n    {\n      id: 'sats',\n      type: 'scatter',\n      coordinateSystem: 'geo',\n      symbolSize: sats.length > 500 ? 3 : 7,\n      itemStyle: { color: COLORS.sat, borderColor: '#fff', borderWidth: sats.length > 500 ? 0 : 1 },\n      animation: false,\n      large: sats.length > 2000,\n      label: {\n        show: sats.length <= LABEL_LIMIT,\n        position: 'right',\n        color: COLORS.text,\n        fontSize: 11,\n        formatter: (p) => nameOf(p.value[3]),\n      },\n      z: 3,\n      data: [],\n    },\n  ],\n};\n\n// Start after Grafana has applied `option` to the chart.\nsetTimeout(() => {\n  if (chart.__satReplayDone === replayKey) {\n    render(T1, false);  // auto-refresh: stay live, no replay\n  } else {\n    play();\n  }\n}, 0);\n\nreturn {\n  version: 2,\n  notMerge: true,\n  option,\n  unsubscribe: stop,     // Grafana calls this before re-running the code (new data, panel closed)\n};\n",
+        "map": "json",
+        "renderer": "canvas",
+        "themeEditor": {
+          "name": "default",
+          "config": "{}"
+        },
+        "editor": {
+          "format": "auto"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      }
+    },
+    {
+      "id": 4,
+      "type": "volkovlabs-echarts-panel",
+      "title": "Sky above ${city:text}",
+      "description": "The sky seen from the selected city or coordinates: zenith in the centre, horizon on the outer circle, North up and East on the left (as on a star chart held overhead). Satellites above the horizon move across it over the time range, like the map. Yellow: sunlit. Grey: in Earth's shadow, so invisible to the eye. Faint blue grid: celestial parallels (declination, every 30°, equator brighter) and meridians (right ascension, every 2 h). Faint lines: main constellations. The sky background brightens with the Sun's altitude. Data: A /sky, B /observer, C /sky_chart. Code: grafana/panels/sky-view.js.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "satapi"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 20,
+        "w": 12,
+        "h": 22
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "satapi"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "url": "/sky?group=${constellation}&ids=${satellite:csv}&from=${__from}&to=${__to}&city=${city}&coords=${coords:percentencode}&min_el=${min_el}",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [],
+          "filters": []
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "satapi"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "url": "/observer?city=${city}&coords=${coords:percentencode}",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [],
+          "filters": []
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "satapi"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "url": "/sky_chart",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [],
+          "filters": []
+        }
+      ],
+      "options": {
+        "editorMode": "code",
+        "getOption": "/*\n * Sky view — code for the \"Business Charts\" (Apache ECharts) panel.\n *\n * Shows the sky above an observer: zenith in the centre, horizon on the outer\n * circle, North up and East on the LEFT (as on a star chart held overhead).\n * Satellites move across it over the dashboard time range, like the map.\n *\n * This file is the readable source. Grafana runs the copy embedded in\n * grafana/dashboards/satellites.json (panel option \"getOption\").\n * After editing this file run:   python3 grafana/embed_panel_code.py\n *\n * Data (Infinity queries):\n *   A  /sky?...       satellites while above the horizon: norad_id, name, k (step), t, az, el, range_km, sunlit\n *   B  /observer?...  one row: name, lat, lon\n *   C  /sky_chart     constellation lines (kind=line) and labels (kind=label), RA/Dec in degrees\n *\n * Drawn layers (back to front):\n *   sky disc (colour follows the Sun's altitude), equatorial grid (declination\n *   parallels every 30 deg and hour-circle meridians every 2 h, celestial\n *   equator brighter), constellation stick figures and names, alt/az grid\n *   (30/60 deg rings, N-E-S-W), the Sun, satellite trails and satellites\n *   (bright = sunlit, grey = in Earth's shadow and therefore invisible to the eye).\n */\n\nconst chart = context.panel.chart;\nconst dark = context.grafana.theme.isDark;\nconst rv = context.grafana.replaceVariables;\n\nconst ANIM_MS = (parseFloat(rv('$anim_seconds')) || 10) * 1000;\nconst LABEL_LIMIT = parseInt(rv('$label_limit'), 10) || 0;\nconst MIN_EL = parseFloat(rv('$min_el')) || 0;   // hide satellites lower than this\nconst TRAIL_LIMIT = 25;\nconst FRAME_MS = 40;\nconst T0 = Number(rv('${__from}'));\nconst T1 = Number(rv('${__to}'));\n\nconst COLORS = {\n  text: dark ? '#d8dee9' : '#24292e',\n  ring: 'rgba(160, 175, 200, 0.55)',\n  grid: 'rgba(160, 175, 200, 0.22)',\n  eqGrid: 'rgba(120, 170, 255, 0.16)',\n  equator: 'rgba(120, 170, 255, 0.40)',\n  constLine: 'rgba(200, 210, 255, 0.30)',\n  constText: 'rgba(200, 210, 255, 0.45)',\n  satLit: '#FFE27A',\n  satShadow: '#7d8796',\n  trail: 'rgba(255, 226, 122, 0.45)',\n  sun: '#FFB000',\n};\n\nconst rad = Math.PI / 180;\nconst deg = 180 / Math.PI;\n\n// ---- data frames by query ------------------------------------------------------\nconst data = context.panel.data;\nconst frameOf = (refId) => (data.series || []).find((s) => s.refId === refId);\nconst columns = (refId) => {\n  const f = frameOf(refId);\n  const out = {};\n  if (f) f.fields.forEach((x) => { out[x.name] = Array.from(x.values); });\n  return out;\n};\nconst A = columns('A');\nconst B = columns('B');\nconst C = columns('C');\n\nconst obs = B.lat ? { name: B.name[0], lat: B.lat[0], lon: B.lon[0] } : null;\n\n// Satellites: per satellite a map step-index -> sample\nconst sats = [];\n{\n  const byId = new Map();\n  const n = (A.norad_id || []).length;\n  for (let i = 0; i < n; i++) {\n    let s = byId.get(A.norad_id[i]);\n    if (!s) {\n      s = { id: A.norad_id[i], name: String(A.norad_id[i]), samples: new Map() };\n      byId.set(s.id, s);\n      sats.push(s);\n    }\n    if (A.name[i]) s.name = A.name[i];\n    s.samples.set(A.k[i], { t: A.t[i], az: A.az[i], el: A.el[i], range: A.range_km[i], sunlit: A.sunlit[i] });\n  }\n}\nlet STEP_MS = 20000;\nfor (const s of sats) {\n  const ks = Array.from(s.samples.keys()).sort((a, b) => a - b);\n  for (let j = 1; j < ks.length; j++) {\n    if (ks[j] === ks[j - 1] + 1) { STEP_MS = s.samples.get(ks[j]).t - s.samples.get(ks[j - 1]).t; break; }\n  }\n  s.keys = ks;\n}\n\n// Constellations: polylines in RA/Dec\nconst constLines = [];\nconst constLabels = [];\n{\n  const n = (C.kind || []).length;\n  let cur = null;\n  let curLine = null;\n  for (let i = 0; i < n; i++) {\n    if (C.kind[i] === 'label') {\n      constLabels.push({ name: C.name[i], ra: C.ra[i], dec: C.dec[i] });\n    } else {\n      if (C.line[i] !== curLine) { cur = []; constLines.push(cur); curLine = C.line[i]; }\n      cur.push([C.ra[i], C.dec[i]]);\n    }\n  }\n}\n\n// ---- astronomy helpers -----------------------------------------------------------\nconst days = (tMs) => tMs / 86400000 - 10957.5; // days since J2000.0\nconst lstDeg = (tMs) => ((((280.46061837 + 360.98564736629 * days(tMs) + obs.lon) % 360) + 360) % 360);\n\n// RA/Dec (deg) -> altitude/azimuth (deg) for the observer at time tMs\nfunction raDecToAltAz(ra, dec, lst) {\n  const H = (lst - ra) * rad;\n  const d = dec * rad;\n  const p = obs.lat * rad;\n  const alt = Math.asin(Math.sin(p) * Math.sin(d) + Math.cos(p) * Math.cos(d) * Math.cos(H));\n  const az = Math.atan2(-Math.cos(d) * Math.sin(H), Math.sin(d) * Math.cos(p) - Math.cos(d) * Math.sin(p) * Math.cos(H));\n  return [alt * deg, ((az * deg) % 360 + 360) % 360];\n}\n\n// Sun RA/Dec (deg), low precision\nfunction sunRaDec(tMs) {\n  const d = days(tMs);\n  const g = (357.529 + 0.98560028 * d) * rad;\n  const L = (280.459 + 0.98564736 * d + 1.915 * Math.sin(g) + 0.02 * Math.sin(2 * g)) * rad;\n  const e = (23.439 - 0.00000036 * d) * rad;\n  return [Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)) * deg, Math.asin(Math.sin(e) * Math.sin(L)) * deg];\n}\n\n// Alt/az -> chart x/y. Zenith at (0,0), horizon at radius 1, North up, East left.\nconst project = (alt, az) => {\n  const r = (90 - alt) / 90;\n  return [-Math.sin(az * rad) * r, Math.cos(az * rad) * r];\n};\n\n// Turn a list of RA/Dec points into polylines above the horizon (split where they set).\nfunction skyPolylines(points, lst) {\n  const out = [];\n  let cur = [];\n  for (const [ra, dec] of points) {\n    const [alt, az] = raDecToAltAz(ra, dec, lst);\n    if (alt >= 0) {\n      cur.push(project(alt, az));\n    } else if (cur.length) {\n      if (cur.length > 1) out.push(cur);\n      cur = [];\n    }\n  }\n  if (cur.length > 1) out.push(cur);\n  return out;\n}\n\n// Equatorial grid in RA/Dec, computed once\nconst decParallels = [];\nfor (const dec of [-60, -30, 0, 30, 60]) {\n  const pts = [];\n  for (let ra = 0; ra <= 360; ra += 4) pts.push([ra, dec]);\n  decParallels.push({ dec, pts });\n}\nconst raMeridians = [];\nfor (let ra = 0; ra < 360; ra += 30) {\n  const pts = [];\n  for (let dec = -88; dec <= 88; dec += 4) pts.push([ra, dec]);\n  raMeridians.push(pts);\n}\n\n// Interpolated satellite direction at time tMs (great-circle between steps)\nfunction satAt(s, tMs) {\n  const x = (tMs - T0) / STEP_MS;\n  const k = Math.floor(x);\n  const a = s.samples.get(k);\n  const b = s.samples.get(k + 1);\n  if (!a && !b) return null;\n  if (!a || !b) {\n    const only = a || b;\n    return Math.abs(only.t - tMs) < STEP_MS / 2 ? only : null;\n  }\n  const f = Math.min(1, Math.max(0, x - k));\n  const va = [Math.cos(a.el * rad) * Math.cos(a.az * rad), Math.cos(a.el * rad) * Math.sin(a.az * rad), Math.sin(a.el * rad)];\n  const vb = [Math.cos(b.el * rad) * Math.cos(b.az * rad), Math.cos(b.el * rad) * Math.sin(b.az * rad), Math.sin(b.el * rad)];\n  const om = Math.acos(Math.min(1, Math.max(-1, va[0] * vb[0] + va[1] * vb[1] + va[2] * vb[2])));\n  let v = va;\n  if (om > 1e-6) {\n    const s1 = Math.sin((1 - f) * om) / Math.sin(om);\n    const s2 = Math.sin(f * om) / Math.sin(om);\n    v = [s1 * va[0] + s2 * vb[0], s1 * va[1] + s2 * vb[1], s1 * va[2] + s2 * vb[2]];\n  }\n  return {\n    el: Math.atan2(v[2], Math.hypot(v[0], v[1])) * deg,\n    az: ((Math.atan2(v[1], v[0]) * deg) % 360 + 360) % 360,\n    range: Math.round(a.range + (b.range - a.range) * f),\n    sunlit: f < 0.5 ? a.sunlit : b.sunlit,\n  };\n}\n\nconst fmtTime = (tMs) => new Date(tMs).toISOString().replace('T', ' ').slice(0, 19) + ' UTC';\n\n// Sky colour from the Sun's altitude: day blue -> twilight -> night\nfunction skyColor(sunAlt) {\n  const night = [10, 14, 26];\n  const day = [38, 74, 128];\n  const f = Math.min(1, Math.max(0, (sunAlt + 12) / 18)); // -12 deg (night) .. +6 deg (day)\n  const c = night.map((n, i) => Math.round(n + (day[i] - n) * f));\n  return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;\n}\n\n// ---- draw one moment ------------------------------------------------------------\nfunction render(tMs, playing) {\n  const lst = lstDeg(tMs);\n  const [sra, sdec] = sunRaDec(tMs);\n  const [sunAlt, sunAz] = raDecToAltAz(sra, sdec, lst);\n\n  const eqLines = [];\n  for (const p of decParallels) {\n    for (const pl of skyPolylines(p.pts, lst)) eqLines.push({ coords: pl, lineStyle: { color: p.dec === 0 ? COLORS.equator : COLORS.eqGrid } });\n  }\n  for (const m of raMeridians) {\n    for (const pl of skyPolylines(m, lst)) eqLines.push({ coords: pl });\n  }\n\n  const conLines = [];\n  for (const line of constLines) for (const pl of skyPolylines(line, lst)) conLines.push({ coords: pl });\n  const conNames = [];\n  for (const l of constLabels) {\n    const [alt, az] = raDecToAltAz(l.ra, l.dec, lst);\n    if (alt > 3) conNames.push({ value: project(alt, az), name: l.name });\n  }\n\n  const points = [];\n  const trails = [];\n  sats.forEach((s, i) => {\n    const p = satAt(s, tMs);\n    if (p && p.el >= MIN_EL) {\n      points.push({ value: [...project(p.el, p.az), i, p.az, p.el, p.range, p.sunlit],\n        itemStyle: { color: p.sunlit ? COLORS.satLit : COLORS.satShadow } });\n    }\n  });\n  if (points.length <= TRAIL_LIMIT) {\n    for (const pt of points) {\n      const s = sats[pt.value[2]];\n      for (const k of s.keys) {\n        const smp = s.samples.get(k);\n        if (smp.t <= tMs && smp.el >= MIN_EL) trails.push(project(smp.el, smp.az));\n      }\n    }\n  }\n\n  chart.setOption({\n    series: [\n      { id: 'disc', data: [[0, 0]], itemStyle: { color: skyColor(sunAlt) } },\n      { id: 'eqgrid', data: eqLines },\n      { id: 'constLines', data: conLines },\n      { id: 'constNames', data: conNames },\n      { id: 'sun', data: sunAlt > -1 ? [project(Math.max(sunAlt, 0), sunAz)] : [] },\n      { id: 'trails', data: trails },\n      { id: 'sats', data: points, label: { show: points.length <= LABEL_LIMIT } },\n    ],\n    graphic: [{\n      id: 'clock',\n      style: {\n        text: (playing ? '▶  ' : '■  ') + fmtTime(tMs) + '\\n' + obs.name + '   ·   ' + points.length +\n          (MIN_EL > 0 ? ' above ' + MIN_EL + '°' : ' above horizon') + (sunAlt > -6 ? '   ·   Sun ' + sunAlt.toFixed(0) + '°' : ''),\n      },\n    }],\n  });\n}\n\n// ---- animation loop (same behaviour as the map) -----------------------------------\nlet timer = null;\nconst stop = () => { if (timer) { clearTimeout(timer); timer = null; } };\nconst replayKey = [rv('$constellation'), rv('${satellite:csv}'), rv('$city'), rv('$coords'), Math.round((T1 - T0) / 60000)].join('|');\n\nfunction play() {\n  stop();\n  const started = Date.now();\n  const step = () => {\n    const f = Math.min(1, (Date.now() - started) / ANIM_MS);\n    render(T0 + f * (T1 - T0), f < 1);\n    if (f < 1) {\n      timer = setTimeout(step, FRAME_MS);\n    } else {\n      timer = null;\n      chart.__skyReplayDone = replayKey;\n    }\n  };\n  step();\n}\n\n// ---- message when the observer is unknown (bad coordinates) or the API refused ------\nconst err = (data.errors && data.errors[0]) || data.error;\nif (!obs || !isFinite(T0) || !isFinite(T1) || T1 <= T0 || (err && !sats.length)) {\n  const msg = err && err.message ? err.message : 'Choose a city or enter coordinates like \"52.52, 13.405\", and a time range of 24 hours or less.';\n  return {\n    version: 2,\n    notMerge: true,\n    option: {\n      graphic: [{ type: 'text', left: 'center', top: 'middle',\n        style: { text: msg, fill: COLORS.text, fontSize: 14, width: 460, overflow: 'break', align: 'center' } }],\n    },\n  };\n}\n\n// ---- static chart definition --------------------------------------------------------\n// Square plot area: the sky disc must stay round whatever the panel's shape.\nconst W = chart.getWidth();\nconst H = chart.getHeight();\nconst size = Math.max(50, Math.min(W - 40, H - 40));\nconst grid = { left: (W - size) / 2, top: (H - size) / 2 + 8, width: size, height: size };\n\n// Alt/az grid, fixed\nconst ring = (alt) => {\n  const pts = [];\n  for (let az = 0; az <= 360; az += 3) pts.push(project(alt, az));\n  return { coords: pts };\n};\nconst altAzLines = [ring(30), ring(60)];\nfor (let az = 0; az < 360; az += 30) altAzLines.push({ coords: [project(90, az), project(0, az)] });\nconst cardinals = [['N', 0], ['NE', 45], ['E', 90], ['SE', 135], ['S', 180], ['SW', 225], ['W', 270], ['NW', 315]]\n  .map(([name, az]) => ({ name, value: [-Math.sin(az * rad) * 1.07, Math.cos(az * rad) * 1.07] }));\n\nconst nameOf = (i) => sats[i].name;\nconst lineSeries = (id, color, z) => ({\n  id, type: 'lines', coordinateSystem: 'cartesian2d', polyline: true, silent: true, z,\n  lineStyle: { color, width: 1 }, animation: false, data: [],\n});\n\nconst option = {\n  animation: false,  // every frame replaces the data; built-in transitions would fight the replay\n  grid,\n  xAxis: { type: 'value', min: -1.12, max: 1.12, show: false },\n  yAxis: { type: 'value', min: -1.12, max: 1.12, show: false },\n  tooltip: {\n    trigger: 'item',\n    formatter: (p) => {\n      if (p.seriesId !== 'sats') return '';\n      const v = p.value;\n      return `<b>${nameOf(v[2])}</b> [${sats[v[2]].id}]<br/>az ${v[3].toFixed(1)}°, el ${v[4].toFixed(1)}°<br/>` +\n        `range ${v[5]} km<br/>${v[6] ? 'sunlit' : \"in Earth's shadow\"}`;\n    },\n  },\n  toolbox: {\n    right: 12, top: 8,\n    iconStyle: { borderColor: COLORS.text },\n    feature: { myReplay: { show: true, title: 'Replay', icon: 'path://M4,2 L20,12 L4,22 Z', onclick: () => play() } },\n  },\n  graphic: [{\n    id: 'clock', type: 'text', left: 16, top: 10, z: 100,\n    style: { text: '', fill: COLORS.text, fontSize: 12, fontFamily: 'monospace', lineHeight: 17 },\n  }],\n  series: [\n    { // sky disc (radius 1 = horizon), drawn as one big circle symbol sized to the grid\n      id: 'disc', type: 'scatter', silent: true, z: 0, animation: false,\n      symbolSize: size / 2.24 * 2, data: [[0, 0]], itemStyle: { color: skyColor(-20) },\n    },\n    { ...lineSeries('eqgrid', COLORS.eqGrid, 1) },\n    { ...lineSeries('constLines', COLORS.constLine, 2), lineStyle: { color: COLORS.constLine, width: 1.2 } },\n    {\n      id: 'constNames', type: 'scatter', silent: true, z: 2, symbolSize: 0, animation: false, data: [],\n      label: { show: true, formatter: (p) => p.name, color: COLORS.constText, fontSize: 10 },\n    },\n    { ...lineSeries('altaz', COLORS.grid, 3), data: altAzLines },\n    { // horizon circle\n      id: 'horizon', type: 'lines', coordinateSystem: 'cartesian2d', polyline: true, silent: true, z: 3,\n      lineStyle: { color: COLORS.ring, width: 1.5 }, animation: false, data: [ring(0)],\n    },\n    {\n      id: 'cardinals', type: 'scatter', silent: true, z: 3, symbolSize: 0, animation: false, data: cardinals,\n      label: { show: true, formatter: (p) => p.name, color: COLORS.text, fontSize: 12, fontWeight: 'bold' },\n    },\n    { id: 'sun', type: 'scatter', silent: true, z: 4, symbolSize: 16, itemStyle: { color: COLORS.sun }, animation: false, data: [] },\n    { id: 'trails', type: 'scatter', silent: true, z: 5, symbolSize: 2, itemStyle: { color: COLORS.trail }, animation: false, data: [] },\n    {\n      id: 'sats', type: 'scatter', z: 6, animation: false,\n      symbolSize: sats.length > 300 ? 4 : 7,\n      itemStyle: { borderColor: 'rgba(0,0,0,0.6)', borderWidth: 0.5 },\n      label: { show: false, position: 'right', color: '#e8ecf1', fontSize: 11, formatter: (p) => nameOf(p.value[2]) },\n      data: [],\n    },\n  ],\n};\n\nsetTimeout(() => {\n  if (chart.__skyReplayDone === replayKey) {\n    render(T1, false);\n  } else {\n    play();\n  }\n}, 0);\n\nreturn { version: 2, notMerge: true, option, unsubscribe: stop };\n",
+        "map": "none",
+        "renderer": "canvas",
+        "themeEditor": {
+          "name": "default",
+          "config": "{}"
+        },
+        "editor": {
+          "format": "auto"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      }
+    },
+    {
+      "id": 5,
+      "type": "table",
+      "title": "Above the horizon at the end time",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "satapi"
+      },
+      "description": "Satellites above the minimum elevation as seen from the selected place at the end of the time range (/visible), highest first. Azimuth: 0° = North, 90° = East.",
+      "gridPos": {
+        "x": 12,
+        "y": 20,
+        "w": 12,
+        "h": 22
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "satapi"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "url": "/visible?group=${constellation}&ids=${satellite:csv}&t=${__to}&city=${city}&coords=${coords:percentencode}&min_el=${min_el}",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [],
+          "filters": []
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Satellite"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "norad_id"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "NORAD ID"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "az"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Azimuth"
+              },
+              {
+                "id": "unit",
+                "value": "degree"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "el"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Elevation"
+              },
+              {
+                "id": "unit",
+                "value": "degree"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "text",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 30
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 60
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "range_km"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Distance"
+              },
+              {
+                "id": "unit",
+                "value": "lengthkm"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sunlit"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Sunlit"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "table",
+      "title": "Current positions",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "satapi"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 42,
+        "w": 16,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "satapi"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "url": "/positions?group=${constellation}&ids=${satellite:csv}&t=${__to}",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [],
+          "filters": []
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "alt_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "lengthkm"
+              },
+              {
+                "id": "displayName",
+                "value": "Altitude"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "speed_kms"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "suffix: km/s"
+              },
+              {
+                "id": "displayName",
+                "value": "Speed"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tle_age_h"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "h"
+              },
+              {
+                "id": "displayName",
+                "value": "Element set age"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "norad_id"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "NORAD ID"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "lat"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Latitude"
+              },
+              {
+                "id": "unit",
+                "value": "degree"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "lon"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Longitude"
+              },
+              {
+                "id": "unit",
+                "value": "degree"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Satellite"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "description": "Current position of each selected satellite (/positions). 'Element set age' is how old the Space-Track orbital data is; older data means less accurate positions."
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Data status",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "satapi"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 42,
+        "w": 8,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "satapi"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "url": "/summary?group=${constellation}&ids=${satellite:csv}&t=${__to}",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [],
+          "filters": []
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "satellites"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Satellites shown"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "median_tle_age_h"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Median element-set age"
+              },
+              {
+                "id": "unit",
+                "value": "h"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 72
+                    },
+                    {
+                      "color": "red",
+                      "value": 168
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "data_fetched_min_ago"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Downloaded from Space-Track"
+              },
+              {
+                "id": "unit",
+                "value": "m"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "description": "Number of satellites shown, median age of their orbital data (orange above 3 days, red above 7 days), and when the API last downloaded the constellation from Space-Track (/summary)."
+    }
+  ],
+  "description": "Satellite motion from Space-Track orbital data, propagated with SGP4 by the Python API (satapi). Pick a constellation and satellites at the top and a time range of up to 24 h: the map replays the motion over that range and stops at its end time ('now' = live). The table and status panels show the end time. See grafana/dashboards/README.md for how this file is built."
+}

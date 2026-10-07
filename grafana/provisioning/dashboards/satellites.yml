@@ -1,0 +1,23 @@
+# Grafana provisioning: DASHBOARD PROVIDER
+# ----------------------------------------
+# This file does not contain a dashboard. It tells Grafana where to find
+# dashboard files. The actual dashboard (map, table, panels and dropdowns) is
+# ../../dashboards/satellites.json.
+apiVersion: 1
+providers:
+  - name: satellites
+    # Grafana folder the dashboard appears in.
+    folder: Space
+    type: file
+    # Let you edit and save the dashboard in the browser. Those saves go into
+    # Grafana's internal database, NOT back into satellites.json, and the next
+    # change to the file overwrites them. To keep a change made in the browser,
+    # use Export -> Export as JSON and replace satellites.json with the result.
+    allowUiUpdates: true
+    # Re-read the folder every 30 s: edits to satellites.json in a text editor
+    # show up in Grafana within half a minute, without a restart.
+    updateIntervalSeconds: 30
+    options:
+      # Load every .json file in this folder as a dashboard. This is
+      # ./grafana/dashboards, mounted into the container by docker-compose.yml.
+      path: /etc/grafana/dashboards

@@ -1,0 +1,222 @@
+{
+ "berlin": {
+  "label": "Berlin",
+  "lat": 52.52,
+  "lon": 13.405
+ },
+ "munich": {
+  "label": "Munich",
+  "lat": 48.1351,
+  "lon": 11.582
+ },
+ "hamburg": {
+  "label": "Hamburg",
+  "lat": 53.5511,
+  "lon": 9.9937
+ },
+ "frankfurt": {
+  "label": "Frankfurt",
+  "lat": 50.1109,
+  "lon": 8.6821
+ },
+ "vienna": {
+  "label": "Vienna",
+  "lat": 48.2082,
+  "lon": 16.3738
+ },
+ "zurich": {
+  "label": "Zurich",
+  "lat": 47.3769,
+  "lon": 8.5417
+ },
+ "paris": {
+  "label": "Paris",
+  "lat": 48.8566,
+  "lon": 2.3522
+ },
+ "london": {
+  "label": "London",
+  "lat": 51.5074,
+  "lon": -0.1278
+ },
+ "amsterdam": {
+  "label": "Amsterdam",
+  "lat": 52.3676,
+  "lon": 4.9041
+ },
+ "madrid": {
+  "label": "Madrid",
+  "lat": 40.4168,
+  "lon": -3.7038
+ },
+ "rome": {
+  "label": "Rome",
+  "lat": 41.9028,
+  "lon": 12.4964
+ },
+ "athens": {
+  "label": "Athens",
+  "lat": 37.9838,
+  "lon": 23.7275
+ },
+ "sofia": {
+  "label": "Sofia",
+  "lat": 42.6977,
+  "lon": 23.3219
+ },
+ "plovdiv": {
+  "label": "Plovdiv",
+  "lat": 42.1354,
+  "lon": 24.7453
+ },
+ "varna": {
+  "label": "Varna",
+  "lat": 43.2141,
+  "lon": 27.9147
+ },
+ "istanbul": {
+  "label": "Istanbul",
+  "lat": 41.0082,
+  "lon": 28.9784
+ },
+ "stockholm": {
+  "label": "Stockholm",
+  "lat": 59.3293,
+  "lon": 18.0686
+ },
+ "oslo": {
+  "label": "Oslo",
+  "lat": 59.9139,
+  "lon": 10.7522
+ },
+ "helsinki": {
+  "label": "Helsinki",
+  "lat": 60.1699,
+  "lon": 24.9384
+ },
+ "reykjavik": {
+  "label": "Reykjavik",
+  "lat": 64.1466,
+  "lon": -21.9426
+ },
+ "longyearbyen": {
+  "label": "Longyearbyen (Svalbard)",
+  "lat": 78.2232,
+  "lon": 15.6267
+ },
+ "moscow": {
+  "label": "Moscow",
+  "lat": 55.7558,
+  "lon": 37.6173
+ },
+ "cairo": {
+  "label": "Cairo",
+  "lat": 30.0444,
+  "lon": 31.2357
+ },
+ "nairobi": {
+  "label": "Nairobi",
+  "lat": -1.2921,
+  "lon": 36.8219
+ },
+ "cape_town": {
+  "label": "Cape Town",
+  "lat": -33.9249,
+  "lon": 18.4241
+ },
+ "dubai": {
+  "label": "Dubai",
+  "lat": 25.2048,
+  "lon": 55.2708
+ },
+ "mumbai": {
+  "label": "Mumbai",
+  "lat": 19.076,
+  "lon": 72.8777
+ },
+ "beijing": {
+  "label": "Beijing",
+  "lat": 39.9042,
+  "lon": 116.4074
+ },
+ "tokyo": {
+  "label": "Tokyo",
+  "lat": 35.6762,
+  "lon": 139.6503
+ },
+ "singapore": {
+  "label": "Singapore",
+  "lat": 1.3521,
+  "lon": 103.8198
+ },
+ "sydney": {
+  "label": "Sydney",
+  "lat": -33.8688,
+  "lon": 151.2093
+ },
+ "auckland": {
+  "label": "Auckland",
+  "lat": -36.8485,
+  "lon": 174.7633
+ },
+ "new_york": {
+  "label": "New York",
+  "lat": 40.7128,
+  "lon": -74.006
+ },
+ "toronto": {
+  "label": "Toronto",
+  "lat": 43.6532,
+  "lon": -79.3832
+ },
+ "houston": {
+  "label": "Houston",
+  "lat": 29.7604,
+  "lon": -95.3698
+ },
+ "cape_canaveral": {
+  "label": "Cape Canaveral",
+  "lat": 28.3922,
+  "lon": -80.6077
+ },
+ "los_angeles": {
+  "label": "Los Angeles",
+  "lat": 34.0522,
+  "lon": -118.2437
+ },
+ "anchorage": {
+  "label": "Anchorage",
+  "lat": 61.2181,
+  "lon": -149.9003
+ },
+ "mexico_city": {
+  "label": "Mexico City",
+  "lat": 19.4326,
+  "lon": -99.1332
+ },
+ "rio": {
+  "label": "Rio de Janeiro",
+  "lat": -22.9068,
+  "lon": -43.1729
+ },
+ "buenos_aires": {
+  "label": "Buenos Aires",
+  "lat": -34.6037,
+  "lon": -58.3816
+ },
+ "paranal": {
+  "label": "ESO Paranal (Chile)",
+  "lat": -24.6272,
+  "lon": -70.4042
+ },
+ "mauna_kea": {
+  "label": "Mauna Kea (Hawaii)",
+  "lat": 19.8207,
+  "lon": -155.4681
+ },
+ "mcmurdo": {
+  "label": "McMurdo Station (Antarctica)",
+  "lat": -77.846,
+  "lon": 166.676
+ }
+}

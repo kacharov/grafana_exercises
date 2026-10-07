@@ -1,0 +1,31 @@
+# Grafana provisioning: DATA SOURCE
+# ---------------------------------
+# Grafana reads every file in /etc/grafana/provisioning/ when it starts.
+# (docker-compose.yml mounts ./grafana/provisioning there.)
+# This file creates the "Satellite API" data source: Grafana's connection to
+# the Python service in ../../satapi. Without it you would have to add the data
+# source by hand in the web UI after every fresh install.
+apiVersion: 1
+datasources:
+  - name: Satellite API
+    # Use the Infinity plugin, which can read JSON from any web address.
+    type: yesoreyeram-infinity-datasource
+    # Fixed ID. Every panel and variable in satellites.json refers to the data
+    # source by this ID ("uid": "satapi"), so they always find it. A data source
+    # added by hand would get a random ID and the dashboard couldn't find it.
+    uid: satapi
+    # Grafana's server (not your browser) makes the requests to the API.
+    access: proxy
+    # Base address of the Python API. Panels only ask for paths such as
+    # /positions?group=..., which Infinity appends to this address.
+    # ${SATAPI_URL} is filled in from an environment variable:
+    #   - Docker:        http://satapi:8000  (set in docker-compose.yml; "satapi"
+    #                    is the name the API container is reachable by from the
+    #                    Grafana container)
+    #   - Grafana on your Mac: http://localhost:8000
+    url: ${SATAPI_URL}
+    # Pre-select this data source when you create new panels.
+    isDefault: true
+    # Allow changing the settings in the UI (they reset on the next restart).
+    editable: true
+    jsonData: {}

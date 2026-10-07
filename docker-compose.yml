@@ -1,0 +1,32 @@
+services:
+  satapi:
+    build: ./satapi
+    env_file: .env
+    environment:
+      CACHE_DIR: /data
+    volumes:
+      - ./data:/data
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:${GRAFANA_VERSION:-latest}
+    depends_on:
+      - satapi
+    ports:
+      - "3000:3000"
+    environment:
+      # Infinity: reads JSON from the Python API. Business Charts: ECharts panel used for the animated map.
+      GF_PLUGINS_PREINSTALL_SYNC: yesoreyeram-infinity-datasource,volkovlabs-echarts-panel
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/dashboards/satellites.json
+      SATAPI_URL: http://satapi:8000
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/etc/grafana/dashboards
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+
+volumes:
+  grafana-data:

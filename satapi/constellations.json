@@ -1,0 +1,42 @@
+{
+  "featured": {
+    "label": "Featured: ISS, Tiangong, Hubble",
+    "norad_ids": [25544, 48274, 20580]
+  },
+  "weather": {
+    "label": "Weather satellites (NOAA, MetOp, GOES)",
+    "norad_ids": [37849, 43013, 54234, 38771, 43689, 41866, 51850, 60133]
+  },
+  "starlink": {
+    "label": "Starlink",
+    "filters": {"OBJECT_NAME": "^STARLINK", "OBJECT_TYPE": "PAYLOAD"}
+  },
+  "oneweb": {
+    "label": "OneWeb",
+    "filters": {"OBJECT_NAME": "^ONEWEB", "OBJECT_TYPE": "PAYLOAD"}
+  },
+  "kuiper": {
+    "label": "Amazon Kuiper",
+    "filters": {"OBJECT_NAME": "^KUIPER", "OBJECT_TYPE": "PAYLOAD"}
+  },
+  "iridium": {
+    "label": "Iridium",
+    "filters": {"OBJECT_NAME": "^IRIDIUM", "OBJECT_TYPE": "PAYLOAD"}
+  },
+  "gps": {
+    "label": "GPS (Navstar)",
+    "filters": {"OBJECT_NAME": "^NAVSTAR", "OBJECT_TYPE": "PAYLOAD"}
+  },
+  "galileo": {
+    "label": "Galileo",
+    "filters": {"OBJECT_NAME": "~~GALILEO", "OBJECT_TYPE": "PAYLOAD"}
+  },
+  "beidou": {
+    "label": "BeiDou",
+    "filters": {"OBJECT_NAME": "^BEIDOU", "OBJECT_TYPE": "PAYLOAD"}
+  },
+  "custom": {
+    "label": "My satellites (edit norad_ids)",
+    "norad_ids": [25544]
+  }
+}
