@@ -35,6 +35,14 @@
     "label": "BeiDou",
     "filters": {"OBJECT_NAME": "^BEIDOU", "OBJECT_TYPE": "PAYLOAD"}
   },
+  "superdove": {
+    "label": "Planet SuperDove (Flock)",
+    "filters": {"OBJECT_NAME": "^FLOCK", "OBJECT_TYPE": "PAYLOAD"}
+  },
+  "pelican": {
+    "label": "Planet Pelican",
+    "filters": {"OBJECT_NAME": "^PELICAN", "OBJECT_TYPE": "PAYLOAD"}
+  },
   "custom": {
     "label": "My satellites (edit norad_ids)",
     "norad_ids": [25544]
