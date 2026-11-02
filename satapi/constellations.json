@@ -9,39 +9,41 @@
   },
   "starlink": {
     "label": "Starlink",
-    "filters": {"OBJECT_NAME": "^STARLINK", "OBJECT_TYPE": "PAYLOAD"}
+    "celestrak": {"GROUP": "starlink"}
   },
   "oneweb": {
     "label": "OneWeb",
-    "filters": {"OBJECT_NAME": "^ONEWEB", "OBJECT_TYPE": "PAYLOAD"}
+    "celestrak": {"GROUP": "oneweb"}
   },
   "kuiper": {
     "label": "Amazon Kuiper",
-    "filters": {"OBJECT_NAME": "^KUIPER", "OBJECT_TYPE": "PAYLOAD"}
+    "celestrak": {"NAME": "KUIPER"}
   },
   "iridium": {
-    "label": "Iridium",
-    "filters": {"OBJECT_NAME": "^IRIDIUM", "OBJECT_TYPE": "PAYLOAD"}
+    "label": "Iridium NEXT",
+    "celestrak": {"GROUP": "iridium-NEXT"}
   },
   "gps": {
-    "label": "GPS (Navstar)",
-    "filters": {"OBJECT_NAME": "^NAVSTAR", "OBJECT_TYPE": "PAYLOAD"}
+    "label": "GPS (operational)",
+    "celestrak": {"GROUP": "gps-ops"}
   },
   "galileo": {
     "label": "Galileo",
-    "filters": {"OBJECT_NAME": "~~GALILEO", "OBJECT_TYPE": "PAYLOAD"}
+    "celestrak": {"GROUP": "galileo"}
   },
   "beidou": {
     "label": "BeiDou",
-    "filters": {"OBJECT_NAME": "^BEIDOU", "OBJECT_TYPE": "PAYLOAD"}
+    "celestrak": {"NAME": "BEIDOU"}
   },
   "superdove": {
     "label": "Planet SuperDove (Flock)",
-    "filters": {"OBJECT_NAME": "^FLOCK", "OBJECT_TYPE": "PAYLOAD"}
+    "celestrak": {"NAME": "FLOCK"},
+    "name_prefix": "FLOCK"
   },
   "pelican": {
     "label": "Planet Pelican",
-    "filters": {"OBJECT_NAME": "^PELICAN", "OBJECT_TYPE": "PAYLOAD"}
+    "celestrak": {"NAME": "PELICAN"},
+    "name_prefix": "PELICAN"
   },
   "custom": {
     "label": "My satellites (edit norad_ids)",

@@ -115,7 +115,7 @@ Query A again. `fieldConfig.overrides` rename the API's column names (`alt_km` â
 ### 3. Stat: "Data status" (bottom right)
 
 `/summary`: satellite count, median age of the orbital data, and minutes since the last download from
-Space-Track. Thresholds colour the age orange above 72 h and red above 168 h.
+CelesTrak. Thresholds colour the age orange above 72 h and red above 168 h.
 
 ## Layout
 

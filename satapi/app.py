@@ -1,5 +1,7 @@
 """Satellite position API for Grafana (Infinity data source).
 
+Orbital elements come from CelesTrak (no account needed), see celestrak.py.
+
 Endpoints (all return flat JSON arrays, which Infinity turns into tables):
   GET /constellations                       -> dropdown values for $constellation
   GET /satellites?group=starlink            -> dropdown values for $satellite
@@ -15,7 +17,7 @@ Endpoints (all return flat JSON arrays, which Infinity turns into tables):
   GET /visible?group=..&ids=..&t=..&city=..&coords=..
                                             -> satellites above the horizon at one moment
   GET /sky_chart                            -> constellation stick figures (RA/Dec)
-  GET /health
+  GET /health                               -> CelesTrak download status, cache age per group
 
 `ids` is a comma-separated list of NORAD catalogue numbers, or `all`.
 `t` is an optional time in epoch milliseconds (Grafana's ${__to}); default now.
@@ -36,7 +38,7 @@ from pathlib import Path
 import numpy as np
 
 from propagate import Satellite, look_angles, propagate
-from spacetrack import SpaceTrackError, store_from_env
+from celestrak import CelesTrakError, store_from_env
 
 try:  # load .env when running outside Docker
     from dotenv import load_dotenv
@@ -66,7 +68,7 @@ def _select(group: str, ids: str) -> list[Satellite]:
         sats = store.get(group)
     except KeyError:
         raise HTTPException(404, f"Unknown constellation '{group}'. See /constellations.")
-    except SpaceTrackError as exc:
+    except CelesTrakError as exc:
         raise HTTPException(503, str(exc))
     ids = (ids or "").strip()
     if ids.lower() in ("", "all", "$__all", "*"):
@@ -82,7 +84,8 @@ def _select(group: str, ids: str) -> list[Satellite]:
 # -- endpoints ---------------------------------------------------------------
 @app.get("/health")
 def health():
-    return {"status": "ok", "groups": [g for g, _ in store.list_groups()]}
+    """Data source status: whether CelesTrak downloads are paused, and cache age per group."""
+    return {"status": "ok", **store.status()}
 
 
 @app.get("/constellations")

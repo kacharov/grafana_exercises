@@ -1,13 +1,17 @@
 services:
   satapi:
     build: ./satapi
-    env_file: .env
+    env_file:
+      - path: .env        # optional (REFRESH_HOURS, PAUSE_HOURS); no credentials needed for CelesTrak
+        required: false
     environment:
       CACHE_DIR: /data
     volumes:
       - ./data:/data
     ports:
-      - "8000:8000"
+      # Only reachable from this computer (for testing/curl). Grafana talks to the API over
+      # Docker's internal network, so the API never needs to be exposed to the internet.
+      - "127.0.0.1:8000:8000"
     restart: unless-stopped
 
   grafana:

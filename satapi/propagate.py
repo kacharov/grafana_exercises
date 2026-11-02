@@ -30,14 +30,20 @@ class Satellite:
     satrec: Satrec
 
 
+# The SGP4 library stores catalog numbers in the old 5-character "Alpha-5"
+# form, which ends at 339999. Newer satellites get 9-digit numbers. The number
+# plays no part in the orbit calculation, so above that limit we hand SGP4 a
+# placeholder and keep the real number in Satellite.norad_id.
+_SGP4_MAX_SATNUM = 339999
+
+
 def satellite_from_gp(record: dict) -> Satellite:
-    """Build a Satellite from one Space-Track GP (OMM-in-JSON) record."""
+    """Build a Satellite from one GP record in OMM form (CelesTrak CSV row)."""
+    fields = dict(record)
+    if int(fields["NORAD_CAT_ID"]) > _SGP4_MAX_SATNUM:
+        fields["NORAD_CAT_ID"] = "0"
     sat = Satrec()
-    try:
-        omm.initialize(sat, record)
-    except Exception:
-        # Fall back to the classic two-line element set
-        sat = Satrec.twoline2rv(record["TLE_LINE1"], record["TLE_LINE2"])
+    omm.initialize(sat, fields)
     epoch = datetime.fromisoformat(record["EPOCH"]).replace(tzinfo=timezone.utc)
     return Satellite(
         norad_id=int(record["NORAD_CAT_ID"]),

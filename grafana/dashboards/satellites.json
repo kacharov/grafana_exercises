@@ -768,7 +768,7 @@
           "show": false
         }
       },
-      "description": "Current position of each selected satellite (/positions). 'Element set age' is how old the Space-Track orbital data is; older data means less accurate positions."
+      "description": "Current position of each selected satellite (/positions). 'Element set age' is how old the CelesTrak orbital data is; older data means less accurate positions."
     },
     {
       "id": 3,
@@ -881,7 +881,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Downloaded from Space-Track"
+                "value": "Downloaded from CelesTrak"
               },
               {
                 "id": "unit",
@@ -905,8 +905,8 @@
         "graphMode": "none",
         "justifyMode": "auto"
       },
-      "description": "Number of satellites shown, median age of their orbital data (orange above 3 days, red above 7 days), and when the API last downloaded the constellation from Space-Track (/summary)."
+      "description": "Number of satellites shown, median age of their orbital data (orange above 3 days, red above 7 days), and when the API last downloaded the constellation from CelesTrak (/summary)."
     }
   ],
-  "description": "Satellite motion from Space-Track orbital data, propagated with SGP4 by the Python API (satapi). Pick a constellation and satellites at the top and a time range of up to 24 h: the map replays the motion over that range and stops at its end time ('now' = live). The table and status panels show the end time. See grafana/dashboards/README.md for how this file is built."
+  "description": "Satellite motion from CelesTrak orbital data (celestrak.org, Dr T.S. Kelso), propagated with SGP4 by the Python API (satapi). Pick a constellation and satellites at the top and a time range of up to 24 h: the map replays the motion over that range and stops at its end time ('now' = live). The table and status panels show the end time. See grafana/dashboards/README.md for how this file is built."
 }
